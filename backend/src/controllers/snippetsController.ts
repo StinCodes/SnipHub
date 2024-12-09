@@ -97,3 +97,35 @@ export const deleteSnippet = async (
     res.status(500).json({ error: "Failed to delete snippet" });
   }
 };
+
+//Search snippets by title, language or tags
+export const searchSnippets = async (req: Request, res: Response): Promise<void> => {
+  const { query, language, tags } = req.query;
+
+  try {
+    let sqlQuery = 'SELECT * FROM snippets WHERE 1=1'; // Base query
+    const params: any[] = [];
+
+    if (query) {
+      sqlQuery += ' AND title ILIKE $1';
+      params.push(`%${query}%`); // Partial match, case-insensitive
+    }
+
+    if (language) {
+      sqlQuery += ` AND language = $${params.length + 1}`;
+      params.push(language);
+    }
+
+    if (tags) {
+      sqlQuery += ` AND tags @> $${params.length + 1}`;
+      params.push(tags);
+    }
+
+    const result = await pool.query(sqlQuery, params);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error searching snippets:', error);
+    res.status(500).json({ error: 'Failed to search snippets' });
+  }
+};
+
