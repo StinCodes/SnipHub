@@ -41,11 +41,13 @@ export const createSnippet = async (
   res: Response
 ): Promise<void> => {
   const { title, code, language, tags } = req.body;
+  console.log("Received data:", { title, code, language, tags });
   try {
     const result = await pool.query(
       "INSERT INTO snippets (title, code, language, tags) VALUES ($1, $2, $3, $4) RETURNING *",
       [title, code, language, tags]
     );
+    console.log("Insert result:", result.rows);
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error("Error creating snippet:", error);
