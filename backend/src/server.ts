@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import pool from './db';
 import snippetsRoutes from './routes/snippetsRoutes'
+import { errorHandler } from './middleware/errorHandler';
 
 
 dotenv.config();
@@ -15,6 +16,9 @@ const PORT = process.env.PORT || 5000;
 
 // Use the snippets API routes
 app.use('/api/snippets', snippetsRoutes);
+
+// Error handling middleware (must be after all routes)
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.send('Welcome to SnipHub API');
