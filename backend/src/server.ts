@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import pool from './db';
+import snippetsRoutes from './routes/snippetsRoutes'
 
 
 dotenv.config();
@@ -11,6 +12,9 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
+
+// Use the snippets API routes
+app.use('/api/snippets', snippetsRoutes);
 
 app.get('/', (req, res) => {
   res.send('Welcome to SnipHub API');
@@ -25,6 +29,8 @@ app.get('/api/test-db', async (req, res) => {
     res.status(500).json({ error: 'Database connection error' });
   }
 });
+
+
 
 
 app.listen(PORT, () => {
