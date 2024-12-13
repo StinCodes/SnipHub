@@ -13,7 +13,7 @@ const SnippetFormPage: React.FC = () => {
         <textarea placeholder="Code"></textarea>
         <input type="text" placeholder="Language" />
         <input type="text" placeholder="Tags (comma-separated)" />
-        <button type="submit">{id ? 'Update Snippet' : 'Create Snippet'}</button>
+        <button type="submit">{id ? 'Edit Snippet' : 'Create Snippet'}</button>
       </form>
     </div>
   );
